@@ -60,7 +60,8 @@ jobs:
           grep -o '"text":"[^"]*' /tmp/tg.log | cut -c9-120 || true
           grep -q "currentId ok : true" /tmp/sortie.txt
           grep -q "rangée dans : f-perso" /tmp/sortie.txt
-          grep -q "réponse prête" /tmp/tg.log
+          grep -q "Déverrouillé" /tmp/tg.log
+          grep -q "Quelle heure est-il à Tokyo" /tmp/tg.log
           ls /tmp/captures
       - uses: actions/upload-artifact@v4
         if: always()
