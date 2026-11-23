@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - name: Vérifier la syntaxe
+        run: for f in src/*.js src/renderer/*.js src/renderer/common/*.js scripts/*.js; do node --check "$f"; done
       - name: Fabriquer les .deb et .tar.gz (amd64, arm64)
         run: node scripts/package-linux.js amd64 arm64
       - uses: actions/upload-artifact@v4
@@ -80,7 +82,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ./dist/linux/cube-hub-llm_*_amd64.deb xvfb xauth
-          /opt/cube-hub-llm/cube-hub-llm --version || true
+          ls -l /opt/cube-hub-llm/chrome-sandbox /usr/bin/cube-hub-llm
       - name: Démarrage rapide
         run: |
           export CUBE_LLM_DIR=/tmp/cube CUBE_SNAPSHOT=/tmp/captures

@@ -511,8 +511,7 @@ ipcMain.handle('login-item:set', (_e, on) => {
     if (on) {
       fs.mkdirSync(path.dirname(AUTOSTART), { recursive: true });
       const exec = process.env.APPIMAGE || process.execPath;
-      fs.writeFileSync(AUTOSTART, ['[Desktop Entry]', 'Type=Application', 'Name=Cube Hub LLM', `Exec="${exec}"`, 'Icon=cube-hub-llm', 'X-GNOME-Autostart-enabled=true', ''].join('
-'));
+      fs.writeFileSync(AUTOSTART, ['[Desktop Entry]', 'Type=Application', 'Name=Cube Hub LLM', `Exec="${exec}"`, 'Icon=cube-hub-llm', 'X-GNOME-Autostart-enabled=true', ''].join('\n'));
     } else {
       fs.rmSync(AUTOSTART, { force: true });
     }
