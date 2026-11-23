@@ -1,0 +1,23 @@
+{
+  "name": "cube-hub-llm",
+  "productName": "Cube Hub LLM",
+  "version": "1.0.0",
+  "description": "Le cube de Cube Hub branché sur les conversations de ton IA locale (Open WebUI + Ollama). Adapté de github.com/Harlo9/cube-hub.",
+  "main": "src/main.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "assets": "node scripts/copy-assets.js && electron scripts/make-icon.js",
+    "package": "node scripts/package.js",
+    "mock": "node scripts/mock-openwebui.js",
+    "package:linux": "node scripts/package-linux.js"
+  },
+  "dependencies": {
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "@electron/packager": "18.3.6",
+    "electron": "33.4.11"
+  }
+}

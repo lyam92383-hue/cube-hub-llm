@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' app:; img-src 'self' app: data: blob:; media-src app: data: blob:; style-src 'self' 'unsafe-inline' app:; script-src 'self' app:">
+<title>Cube Hub LLM</title>
+<link rel="stylesheet" href="hub.css">
+<link rel="stylesheet" href="chat.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-top drag">
+      <span class="app-title">Cube Hub <b class="llm">LLM</b></span>
+      <button class="icon-btn no-drag" id="newBtn" title="Nouvelle conversation (Ctrl+N)">
+        <svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg>
+      </button>
+    </div>
+    <div class="search no-drag">
+      <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="5"/><path d="M13 13l3.5 3.5"/></svg>
+      <input type="search" id="search" placeholder="Rechercher une conversation" spellcheck="false">
+    </div>
+    <div class="list" id="list"></div>
+    <div class="sidebar-bottom" id="serverLine"></div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar drag">
+      <div class="toolbar-spacer"></div>
+      <button class="pill no-drag" id="webuiBtn" title="Ouvrir Open WebUI dans le navigateur">
+        <svg viewBox="0 0 20 20"><path d="M8 4H5.5A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16h9a1.5 1.5 0 0 0 1.5-1.5V12M11 4h5v5M16 4l-7 7"/></svg>
+        <span>Open WebUI</span>
+      </button>
+      <button class="pill no-drag" id="widgetBtn" title="Afficher ou masquer le widget">
+        <svg viewBox="0 0 20 20"><rect x="3.5" y="6.5" width="13" height="10" rx="2.5"/><path d="M5.5 4h9"/></svg>
+        <span>Widget</span>
+      </button>
+      <div class="pill-group no-drag">
+        <button class="icon-btn" id="volumeBtn" title="Volume des sons">
+          <svg viewBox="0 0 20 20" id="volumeIcon"></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" title="Réglages">
+          <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.5v2.2M10 15.3v2.2M2.5 10h2.2M15.3 10h2.2M4.7 4.7l1.6 1.6M13.7 13.7l1.6 1.6M4.7 15.3l1.6-1.6M13.7 6.3l1.6-1.6"/></svg>
+        </button>
+      </div>
+      <div class="caption-space"></div>
+    </div>
+
+    <div class="header" id="header"></div>
+    <div class="content" id="content">
+      <div class="messages" id="messages"></div>
+      <div class="placeholder" id="placeholder"></div>
+    </div>
+    <div class="composer" id="composer">
+      <div class="composer-box">
+        <textarea id="input" rows="1" placeholder="Écris à ton IA…  (Entrée pour envoyer, Maj+Entrée pour aller à la ligne)" spellcheck="true"></textarea>
+        <div class="composer-row">
+          <select id="model" title="Modèle"></select>
+          <span class="composer-hint" id="composerHint"></span>
+          <button class="send" id="sendBtn" title="Envoyer"><svg viewBox="0 0 20 20"><path d="M10 15V5M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="popover" id="volumePopover" hidden>
+    <div class="pop-title">Volume général</div>
+    <input type="range" min="0" max="1" step="0.01" id="masterVolume">
+  </div>
+
+  <div class="modal-back" id="modal" hidden>
+    <div class="modal">
+      <nav class="modal-nav" id="settingsNav"></nav>
+      <section class="modal-page" id="settingsPage"></section>
+      <button class="modal-close icon-btn" id="closeSettings" title="Fermer"><svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+    </div>
+  </div>
+
+  <script type="module" src="hub.js"></script>
+</body>
+</html>
