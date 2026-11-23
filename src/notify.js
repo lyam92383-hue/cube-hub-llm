@@ -2,7 +2,8 @@
 // réponse ou a eu une erreur.
 const fs = require('fs');
 const path = require('path');
-const { Notification, powerMonitor, safeStorage } = require('electron');
+const { Notification, powerMonitor } = require('electron');
+const secrets = require('./secrets');
 const paths = require('./paths');
 
 const API = process.env.CUBE_TELEGRAM_API || 'https://api.telegram.org';
@@ -130,12 +131,7 @@ class Notifier {
   }
 
   readToken() {
-    try {
-      const data = fs.readFileSync(TOKEN_FILE);
-      return safeStorage.isEncryptionAvailable() ? safeStorage.decryptString(data) : null;
-    } catch {
-      return null;
-    }
+    return secrets.read(TOKEN_FILE);
   }
 
   async call(method, params = {}, token = this.readToken(), timeoutMs = 10_000) {
@@ -156,14 +152,13 @@ class Notifier {
     return this.call('sendMessage', { chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true, ...extra });
   }
 
-  /** Vérifie le token avec getMe puis le range chiffré (DPAPI sous Windows, trousseau sous Linux, via safeStorage). */
+  /** Vérifie le token avec getMe puis le range chiffré (voir secrets.js). */
   async connect(token) {
     token = String(token || '').trim();
     if (!/^\d+:[A-Za-z0-9_-]{20,}$/.test(token)) throw new Error('Ce token ne ressemble pas à celui donné par @BotFather.');
-    if (!safeStorage.isEncryptionAvailable()) throw new Error('Le chiffrement du système n\'est pas disponible.');
     const me = await this.call('getMe', {}, token);
     fs.mkdirSync(paths.baseDir, { recursive: true });
-    fs.writeFileSync(TOKEN_FILE, safeStorage.encryptString(token));
+    secrets.write(TOKEN_FILE, token);
     this.botName = me.username;
     return me.username;
   }

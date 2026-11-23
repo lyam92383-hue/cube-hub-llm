@@ -13,7 +13,7 @@ export function configureSounds(s, customFiles) {
 
 function audio() {
   if (!ctx) ctx = new AudioContext();
-  if (ctx.state === 'suspended') ctx.resume();
+  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
   return ctx;
 }
 

@@ -2,7 +2,7 @@
 // (Open WebUI + Ollama sur ton serveur). Adapté de github.com/Harlo9/cube-hub (MIT).
 const {
   app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, globalShortcut, screen,
-  protocol, net, dialog, shell, safeStorage,
+  protocol, net, dialog, shell,
 } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -13,6 +13,7 @@ const stateStore = require('./state');
 const { WebUI, ChatStore } = require('./webui');
 const { Notifier } = require('./notify');
 const { Remote, LOG_FILE } = require('./remote');
+const secrets = require('./secrets');
 
 const ROOT = path.join(__dirname, '..');
 const LINUX = process.platform === 'linux';
@@ -51,16 +52,11 @@ let apiKey = null;
 function readKey() {
   if (process.env.CUBE_LLM_KEY) return process.env.CUBE_LLM_KEY;
   if (apiKey != null) return apiKey;
-  try {
-    apiKey = safeStorage.decryptString(fs.readFileSync(paths.keyFile));
-  } catch {
-    apiKey = '';
-  }
+  apiKey = secrets.read(paths.keyFile) || '';
   return apiKey;
 }
 function writeKey(key) {
-  fs.mkdirSync(paths.baseDir, { recursive: true });
-  fs.writeFileSync(paths.keyFile, safeStorage.encryptString(key));
+  secrets.write(paths.keyFile, key);
   apiKey = key;
 }
 

@@ -9,7 +9,7 @@
 // - tout est noté dans ~/.cube-hub-llm/remote.log (jamais le code).
 const fs = require('fs');
 const path = require('path');
-const { safeStorage } = require('electron');
+const secrets = require('./secrets');
 const paths = require('./paths');
 const totp = require('./totp');
 
@@ -87,11 +87,7 @@ class Remote {
   }
 
   readSecret() {
-    try {
-      return safeStorage.decryptString(fs.readFileSync(SECRET_FILE));
-    } catch {
-      return null;
-    }
+    return secrets.read(SECRET_FILE);
   }
 
   async beginSetup() {
@@ -105,7 +101,7 @@ class Remote {
     if (!this.pendingSecret) return { ok: false, error: 'Recommence la configuration.' };
     if (!totp.verify(this.pendingSecret, code)) return { ok: false, error: 'Code incorrect. Vérifie l\'heure du téléphone et réessaie.' };
     fs.mkdirSync(paths.baseDir, { recursive: true });
-    fs.writeFileSync(SECRET_FILE, safeStorage.encryptString(this.pendingSecret));
+    secrets.write(SECRET_FILE, this.pendingSecret);
     this.pendingSecret = null;
     this.log('code configuré');
     return { ok: true };
