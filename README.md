@@ -65,3 +65,7 @@ joue un scénario complet et enregistre des captures (ajoute `CUBE_TELEGRAM_API`
 
 À chaque envoi sur GitHub, GitHub Actions fabrique les paquets, les **installe sur Ubuntu 24.04 et Debian 12**
 et joue le scénario complet (captures dans les artefacts). Un tag `v1.2.3` publie une Release.
+
+## Inspiration et crédits
+
+Ce projet s'inspire de **[Cube Hub](https://github.com/Harlo9/cube-hub)** de [Harlo9](https://github.com/Harlo9) (app macOS, licence MIT) : l'idée du cube, du widget et du Hub vient de son dépôt. Merci à Harlo9 !
